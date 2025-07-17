@@ -13,7 +13,7 @@ A [Jupyter](https://jupyter.org/) kernel for live connection to DCS (Digital Com
 ## Installation
 
 ### Requirements
-- Python 3.13 or higher
+- Python 3.11 or higher
 - [DCS World](https://www.digitalcombatsimulator.com/) (Digital Combat Simulator)
 
 ### Install Dependencies (Windows)
@@ -21,7 +21,7 @@ A [Jupyter](https://jupyter.org/) kernel for live connection to DCS (Digital Com
 If you don't have Python and [pipx](https://pipx.pypa.io/) installed:
 
 1. **Install Python:**
-   - Download Python 3.13+ from [python.org](https://www.python.org/downloads/)
+   - Download Python 3.11+ from [python.org](https://www.python.org/downloads/)
    - During installation, check "Add Python to PATH"
    - Verify installation in Command Prompt: `python --version`
 
@@ -131,7 +131,20 @@ dcs-jupyter-lab
 Automatically installs the DCS kernel if needed and starts JupyterLab.
 
 
-## Example Usage
+## Examples
+
+### Download Example Notebooks
+
+Get started with these example notebooks:
+
+- **Airport Terrain Demo** - Explore DCS terrain and airfield data
+  - [Download](https://raw.githubusercontent.com/SamiAhola/dcs-jupyter/main/example/notebook/airport_terrain_demo.ipynb) | [View with outputs](https://github.com/SamiAhola/dcs-jupyter/blob/main/example/notebook/airport_terrain_demo.ipynb)
+- **Vehicle Control** - Control units and vehicles in DCS
+  - [Download](https://raw.githubusercontent.com/SamiAhola/dcs-jupyter/main/example/notebook/vehicle_control.ipynb) | [View with outputs](https://github.com/SamiAhola/dcs-jupyter/blob/main/example/notebook/vehicle_control.ipynb)
+
+*Right-click "Download" links and select "Save link as..." to save to your computer.*
+
+### Basic Usage
 
 Once connected, you can execute Lua code directly in DCS:
 
