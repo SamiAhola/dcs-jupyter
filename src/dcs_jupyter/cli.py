@@ -5,7 +5,6 @@ import json
 import os
 import subprocess
 import sys
-from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from jupyter_client.kernelspec import KernelSpecManager
@@ -14,7 +13,7 @@ from jupyter_client.kernelspec import KernelSpecManager
 def install_kernel():
     """Install the DCS Jupyter kernel if not already installed."""
     ksm = KernelSpecManager()
-    
+
     # Check if kernel is already installed
     if 'dcs-lua' in ksm.get_all_specs():
         print('DCS kernel already installed')
@@ -22,19 +21,19 @@ def install_kernel():
 
     # Define kernel spec
     kernel_json = {
-        "argv": [sys.executable, "-m", "dcs_jupyter.kernel", "-f", "{connection_file}"],
-        "display_name": "dcs-lua",
-        "language": "lua"
+        'argv': [sys.executable, '-m', 'dcs_jupyter.kernel', '-f', '{connection_file}'],
+        'display_name': 'dcs-lua',
+        'language': 'lua',
     }
 
     try:
         with TemporaryDirectory() as td:
             os.chmod(td, 0o755)
-            
+
             # Write kernel.json
             with open(os.path.join(td, 'kernel.json'), 'w') as f:
                 json.dump(kernel_json, f, sort_keys=True)
-            
+
             # Install the kernel in the current environment
             ksm.install_kernel_spec(td, 'dcs-lua', user=False, prefix=sys.prefix)
             print('DCS kernel installed successfully')
