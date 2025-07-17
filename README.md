@@ -219,11 +219,12 @@ dcs-jupyter-console  # Will reinstall automatically
 
 ### WSL2 Users
 
-The default localhost configuration should work for most WSL2 setups. If you experience connection issues, you may need to use the Windows host IP:
+The default localhost configuration should work for most WSL2 setups, especially with mirrored networking mode (WSL2 default in newer versions). If you experience connection issues, you may need to use your WSL2 IP address:
 
-1. **Find Windows host IP:** `cat /etc/resolv.conf | grep nameserver`
-2. **Edit IP in the patching code:** Replace `127.0.0.1` with your Windows host IP in the MissionScripting.lua patch above
-3. **Edit IP in kernel:** `src/dcs_jupyter/kernel.py`: `SOCKET_ADDR = 'YOUR_HOST_IP'`
+1. **Find your WSL2 IP address:** `ip addr` - look for the `inet` address on your main interface (usually `eth0`)
+   - **Note:** This is primarily for mirrored networking mode. In older NAT mode, the networking setup may differ.
+2. **Edit IP in the patching code:** Replace `127.0.0.1` with your WSL2 IP address in the MissionScripting.lua patch above
+3. **Edit IP in kernel:** `src/dcs_jupyter/kernel.py`: `SOCKET_ADDR = 'YOUR_WSL2_IP'`
 4. **Configure Windows Firewall** for UDP port 8042 (might be needed)
 
 ### Manual Kernel Installation
