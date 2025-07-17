@@ -86,27 +86,29 @@ end
 
 ### 2. Install DCS Plugin
 
-Load the `dcs_plugin/jupyter_kernel_connection.lua` script in your DCS mission using one of these methods:
+**Simple method** (recommended for most users):
+1. Download the [`jupyter_kernel_connection.lua`](https://raw.githubusercontent.com/SamiAhola/dcs-jupyter/main/dcs_plugin/jupyter_kernel_connection.lua) file
+2. Open Mission Editor → Triggers → New Trigger
+3. Set Event: Mission Start, Action: Do Script
+4. Copy the entire file contents into the text box
 
-**Option A: Copy-paste script content**
-- Open Mission Editor → Triggers → New Trigger
-- Set Event: Mission Start, Action: Do Script
-- Copy entire contents of `jupyter_kernel_connection.lua` into the text box
+That's it! Your mission now has Jupyter support.
 
-**Option B: Do Script File action**
+<details>
+<summary>🔧 Alternative installation methods (click to expand)</summary>
+
+**Method B: Do Script File action**
 - Place `jupyter_kernel_connection.lua` anywhere
-- Mission Editor → Triggers → New Trigger
-- Set Event: Mission Start, Action: Do Script File
+- Mission Editor → Triggers → New Trigger → Do Script File
 - Select the script file
-- *Note: File contents are loaded once and saved internally to mission. Updating the file won't affect the mission.*
+- *Note: File is saved internally to mission*
 
-**Option C: Dynamic loading**
-- Place `jupyter_kernel_connection.lua` anywhere in your DCS user directory (under 'Saved Games')
-- Mission Editor → Triggers → New Trigger
-- Set Event: Mission Start, Action: Do Script
+**Method C: Dynamic loading (advanced)**
+- Place script in your DCS user directory (under 'Saved Games')
 - Use: `assert(loadfile(_G['dcs_jupyter_user_dir'] .. "/Scripts/jupyter_kernel_connection.lua"))()`
 - *Advantage: Reloads script on every mission restart*
-- *You can place the script in any subdirectory by changing the path after `dcs_jupyter_user_dir`*
+
+</details>
 
 ### 3. Configure Network Settings
 
