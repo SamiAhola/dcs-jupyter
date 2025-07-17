@@ -211,7 +211,7 @@ The default localhost configuration should work for most WSL2 setups. If you exp
 1. **Find Windows host IP:** `cat /etc/resolv.conf | grep nameserver`
 2. **Edit IP in the patching code:** Replace `127.0.0.1` with your Windows host IP in the MissionScripting.lua patch above
 3. **Edit IP in kernel:** `src/dcs_jupyter/kernel.py`: `SOCKET_ADDR = 'YOUR_HOST_IP'`
-4. **Configure Windows Firewall** for UDP port 8042
+4. **Configure Windows Firewall** for UDP port 8042 (might be needed)
 
 ### Manual Kernel Installation
 
