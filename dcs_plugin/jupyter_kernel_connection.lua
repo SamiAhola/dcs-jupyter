@@ -31,7 +31,16 @@ function process_request(udp_connection, env)
   return pcall(function ()
     local msg, addr, port = assert(udp_connection:receivefrom())
     local status, retval = execute_command(msg, env)
-    assert(udp:sendto(tostring(retval), addr, port))
+    
+    -- Send structured response: "STATUS|RESULT"
+    local response
+    if status then
+      response = "OK|" .. tostring(retval)
+    else
+      response = "ERROR|" .. tostring(retval)
+    end
+    
+    assert(udp:sendto(response, addr, port))
     return msg, status, retval
   end)
 end

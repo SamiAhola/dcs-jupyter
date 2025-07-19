@@ -1,4 +1,5 @@
 import socket
+from typing import Tuple
 
 
 class DCSConnection:
@@ -11,12 +12,14 @@ class DCSConnection:
         self.socket: socket.socket | None = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.settimeout(self.timeout)
     
-    def execute(self, lua_code: str) -> str:
+    def execute(self, lua_code: str) -> Tuple[bool, str]:
         """
         Execute Lua code in DCS.
         
         Returns:
-            Result string from DCS
+            Tuple of (success: bool, result: str)
+            - success: True if Lua execution succeeded, False if error
+            - result: The actual result or error message
             
         Raises:
             socket.timeout: If DCS doesn't respond within timeout
@@ -27,7 +30,16 @@ class DCSConnection:
             raise ConnectionError("Socket has disconnected.")
         
         self.socket.sendto(lua_code.encode(), (self.host, self.port))
-        return self.socket.recv(64 * 1024).decode()
+        response = self.socket.recv(64 * 1024).decode()
+        
+        # Parse structured response: "STATUS|RESULT"
+        if response.startswith("OK|"):
+            return True, response[3:]  # Remove "OK|" prefix
+        elif response.startswith("ERROR|"):
+            return False, response[6:]  # Remove "ERROR|" prefix
+        else:
+            # Raise error if response doesn't have expected status prefix
+            raise ValueError(f"Invalid response format from DCS: {response[:50]}...")
     
     def disconnect(self) -> None:
         """Close the UDP connection."""

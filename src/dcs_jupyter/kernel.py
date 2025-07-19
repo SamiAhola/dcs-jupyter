@@ -26,8 +26,8 @@ class DcsKernel(Kernel):
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
         try:
-            ret_val = self.dcs.execute(code)
-            status = 'ok'
+            success, ret_val = self.dcs.execute(code)
+            status = 'ok' if success else 'error'
         except socket.timeout:
             ret_val = f'<< DCS connection timeout ({SOCKET_ADDR}:{PORT})>>'
             status = 'error'
