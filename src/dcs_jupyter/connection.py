@@ -8,13 +8,8 @@ class DCSConnection:
         self.host = host
         self.port = port
         self.timeout = timeout
-        self.socket: socket.socket | None = None
-    
-    def connect(self) -> None:
-        """Initialize UDP socket connection."""
-        if self.socket is None:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.socket.settimeout(self.timeout)
+        self.socket: socket.socket | None = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.settimeout(self.timeout)
     
     def execute(self, lua_code: str) -> str:
         """
@@ -29,7 +24,7 @@ class DCSConnection:
             Exception: For other connection errors
         """
         if self.socket is None:
-            raise ConnectionError("Socket not connected. Call connect() first.")
+            raise ConnectionError("Socket has disconnected.")
         
         self.socket.sendto(lua_code.encode(), (self.host, self.port))
         return self.socket.recv(64 * 1024).decode()
@@ -42,7 +37,6 @@ class DCSConnection:
     
     def __enter__(self):
         """Context manager entry."""
-        self.connect()
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
