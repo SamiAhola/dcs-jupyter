@@ -2,7 +2,9 @@ import socket
 
 from ipykernel.kernelbase import Kernel
 
+from dcs_jupyter.connection import DCSConnection
 
+# Configuration constants - edit these for custom setups
 SOCKET_ADDR = '127.0.0.1'
 PORT = 8042
 
@@ -19,17 +21,15 @@ class DcsKernel(Kernel):
     banner = 'DCS kernel.'
 
     def __init__(self, *args, **kwargs):
-        self.udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.udp.settimeout(10)
+        self.dcs = DCSConnection(host=SOCKET_ADDR, port=PORT)
         super().__init__(*args, **kwargs)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
         try:
-            self.udp.sendto(code.encode(), (SOCKET_ADDR, PORT))
-            ret_val = self.udp.recv(64 * 1024).decode()
+            ret_val = self.dcs.execute(code)
             status = 'ok'
         except socket.timeout:
-            ret_val = f'<< Dcs connection timeout ({SOCKET_ADDR}:{PORT})>>'
+            ret_val = f'<< DCS connection timeout ({SOCKET_ADDR}:{PORT})>>'
             status = 'error'
         except KeyboardInterrupt:
             ret_val = '<< Interrupted >>'
@@ -41,6 +41,7 @@ class DcsKernel(Kernel):
             if not silent:
                 stream_content = {'name': 'stdout', 'text': ret_val}
                 self.send_response(self.iopub_socket, 'stream', stream_content)
+        
         return {
             'status': status,
             'execution_count': self.execution_count,  # The base class increments the execution count
@@ -49,7 +50,7 @@ class DcsKernel(Kernel):
         }
 
     def do_shutdown(self, restart):
-        self.udp.close()
+        self.dcs.disconnect()
         return {'status': 'ok', 'restart': restart}
 
 
