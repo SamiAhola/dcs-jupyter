@@ -2,7 +2,7 @@ import socket
 
 from ipykernel.kernelbase import Kernel
 
-from dcs_jupyter.connection import DCSConnection
+from dcs_jupyter.connection import DCSConnection, LuaExecutionError
 
 # Configuration constants - edit these for custom setups
 SOCKET_ADDR = '127.0.0.1'
@@ -26,8 +26,11 @@ class DcsKernel(Kernel):
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
         try:
-            success, ret_val = self.dcs.execute(code)
-            status = 'ok' if success else 'error'
+            ret_val = self.dcs.execute(code)
+            status = 'ok'
+        except LuaExecutionError as e:
+            ret_val = str(e)
+            status = 'error'
         except socket.timeout:
             ret_val = f'<< DCS connection timeout ({SOCKET_ADDR}:{PORT})>>'
             status = 'error'
