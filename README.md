@@ -5,6 +5,8 @@ A [Jupyter](https://jupyter.org/) kernel for live connection to DCS (Digital Com
 ## Features
 
 - Execute Lua code directly in DCS from Jupyter notebooks
+- **Jupyter Magic Commands** (`%dcs` and `%%dcs`) for seamless integration with Python notebooks ([demo notebook](https://github.com/SamiAhola/dcs-jupyter/blob/main/example/notebook/test_magic.ipynb))
+- **Standalone `DcsConnection` class** for use in Python scripts outside Jupyter
 - Real-time communication with running DCS missions
 - Support for both [Jupyter Console](https://jupyter-console.readthedocs.io/) and [JupyterLab](https://jupyterlab.readthedocs.io/)
 - Easy installation and kernel management
@@ -139,6 +141,8 @@ Automatically installs the DCS kernel if needed and starts JupyterLab.
 
 Get started with these example notebooks:
 
+- **Jupyter Magic Commands Demo** - Using `%dcs` and `%%dcs` magic in Python notebooks
+  - [Download](https://raw.githubusercontent.com/SamiAhola/dcs-jupyter/main/example/notebook/test_magic.ipynb) | [View with outputs](https://github.com/SamiAhola/dcs-jupyter/blob/main/example/notebook/test_magic.ipynb)
 - **Airport Terrain Demo** - Explore DCS terrain and airfield data
   - [Download](https://raw.githubusercontent.com/SamiAhola/dcs-jupyter/main/example/notebook/airport_terrain_demo.ipynb) | [View with outputs](https://github.com/SamiAhola/dcs-jupyter/blob/main/example/notebook/airport_terrain_demo.ipynb)
 - **Vehicle Control** - Control units and vehicles in DCS
@@ -148,8 +152,28 @@ Get started with these example notebooks:
 
 ### Basic Usage
 
-Once connected, you can execute Lua code directly in DCS:
+#### Python Notebook Usage
 
+Load the magic extension in your Python notebook:
+```python
+%load_ext dcs_jupyter.magic
+# or to reload: %reload_ext dcs_jupyter.magic
+```
+
+Then use magic commands to execute Lua code in DCS:
+```python
+# Single line magic command
+%dcs trigger.action.outText("Hello from magic command!", 5)
+
+# Multi-line magic command
+%%dcs
+local currentTime = timer.getTime()
+trigger.action.outText("Mission time: " .. math.floor(currentTime) .. " seconds", 5)
+```
+
+#### DCS Lua Kernel Usage
+
+When using the DCS Lua kernel directly, execute Lua code:
 ```lua
 -- Display message in DCS (visible in game)
 trigger.action.outText("Hello from DCS Jupyter!", 10)
