@@ -1,6 +1,6 @@
 [project]
 name = "dcs-jupyter"
-version = "0.1.4"
+version = "0.1.6"
 description = "Jupyter kernel for live connection to DCS (Digital Combat Simulator) scripting environment"
 readme = "README.md"
 license = { text = "MIT" }
