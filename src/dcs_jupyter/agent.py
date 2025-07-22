@@ -17,7 +17,7 @@ try:
 except ImportError:
     pass
 
-from dcs_jupyter.connection import DCSConnection
+from dcs_jupyter.connection import DCSConnection, LuaExecutionError
 
 
 # Model presets for common AI providers
@@ -36,9 +36,9 @@ MODEL_PRESETS = {
 }
 
 
-def spawn_aircraft(
-    ctx: RunContext[DCSConnection], 
-    aircraft_type: str, 
+async def spawn_aircraft(
+    ctx: RunContext[DCSConnection],
+    aircraft_type: str,
     airbase_name: str,
     group_id: int | None = None,
     unit_id: int | None = None,
@@ -147,8 +147,11 @@ def spawn_aircraft(
         altitude_offset_meters=altitude_offset_meters,
         pilot_skill_level=pilot_skill_level,
     )
-    
-    return ctx.deps.execute(lua_code)
+
+    try:
+        return ctx.deps.execute(lua_code)
+    except LuaExecutionError as e:
+        raise AgentRunError("Error executing lua code.") from e
 
 
 def create_dcs_agent(model: str | None = None) -> Agent[DCSConnection]:
