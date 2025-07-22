@@ -44,6 +44,12 @@ pipx install dcs-jupyter
 
 # With JupyterLab and extras (vim bindings, rich output, Dracula theme)
 pipx install "dcs-jupyter[lab]"
+
+# With AI agent for intelligent DCS mission control
+pipx install "dcs-jupyter[agent]"
+
+# Full installation with all features
+pipx install "dcs-jupyter[lab,agent]"
 ```
 
 Also available via [`pip`](https://pip.pypa.io/) or [`uv`](https://docs.astral.sh/uv/) package managers.
@@ -213,6 +219,81 @@ for coalition_id = 0, 2 do
 end
 return net.lua2json(airfields)
 ```
+
+## AI Agent Usage
+
+The AI agent provides intelligent DCS mission control through natural language commands. It uses large language models to understand your requests and execute appropriate DCS operations.
+
+### Installation
+
+```bash
+# Install with agent support
+pipx install "dcs-jupyter[agent]"
+```
+
+### API Key Setup
+
+The agent requires an API key for LLM access. Supported providers:
+
+**Anthropic Claude (recommended):**
+```bash
+export ANTHROPIC_API_KEY="your-api-key-here"
+```
+
+**OpenAI:**
+```bash
+export OPENAI_API_KEY="your-api-key-here"
+```
+
+**Other providers:** See [PydanticAI documentation](https://ai.pydantic.dev/) for additional model support.
+
+### Usage
+
+Run the agent CLI:
+```bash
+# Start with default model (Claude) - using shortcut command
+dcs-jupyter-agent
+
+# Use specific model preset
+dcs-jupyter-agent --model gpt-4o
+dcs-jupyter-agent --model claude-3-5-sonnet
+
+# Alternative: using Python module
+python -m dcs_jupyter.agent --model gpt-4
+
+# Set default via environment variable
+export DCS_AGENT_MODEL=gpt-4
+dcs-jupyter-agent
+
+# List available model presets
+dcs-jupyter-agent --list-models
+```
+
+**Supported Model Presets:**
+- `claude` - Claude Sonnet 4 (default, recommended)
+- `claude-3-5-sonnet` - Claude 3.5 Sonnet
+- `claude-3-5-haiku` - Claude 3.5 Haiku (faster, lower cost)
+- `gpt-4o` - OpenAI GPT-4 Omni
+- `gpt-4o-mini` - OpenAI GPT-4 Omni Mini
+- `gpt-4-turbo` - OpenAI GPT-4 Turbo
+- Custom model names supported
+
+**Example commands:**
+- "Spawn an F-16C at Batumi airbase"
+- "Create an A-10C at altitude 1000 meters over Kutaisi"
+- "Launch a group of F/A-18C aircraft at Senaki-Kolkhi"
+
+### Available Agent Tools
+
+- **spawn_aircraft()** - Deploy aircraft at any airbase with configurable parameters
+- More tools coming soon (waypoint creation, mission objectives, etc.)
+
+### Agent Features
+
+- Natural language command processing
+- Automatic parameter validation and error handling
+- Integration with existing DCS connection infrastructure
+- Support for complex multi-step operations
 
 ## Configuration
 

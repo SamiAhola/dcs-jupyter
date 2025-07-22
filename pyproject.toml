@@ -37,6 +37,7 @@ requires-python = ">=3.11"
 [project.scripts]
 dcs-jupyter-console = "dcs_jupyter.cli:main"
 dcs-jupyter-lab = "dcs_jupyter.cli:main_lab"
+dcs-jupyter-agent = "dcs_jupyter.agent:main"
 
 [project.optional-dependencies]
 lab = [
@@ -44,6 +45,10 @@ lab = [
     "jupyterlab-vim>=4.1.4",
     "rich[jupyter]>=13.9.1",
     "jldracula>=0.2.0",
+]
+agent = [
+    "pydantic-ai>=0.4.4",
+    "clai>=0.4.4",
 ]
 [build-system]
 requires = ["hatchling"]
@@ -53,6 +58,7 @@ dev-dependencies = [
     "mypy~=1.10",
     "ruff>=0.3.7",
     "jedi~=0.19",
+    "pydantic-ai[logfire]>=0.4.4",
 ]
 [tool.ruff]
 line-length = 120
