@@ -44,7 +44,7 @@ class DcsKernel(Kernel):
             if not silent:
                 stream_content = {'name': 'stdout', 'text': ret_val}
                 self.send_response(self.iopub_socket, 'stream', stream_content)
-        
+
         return {
             'status': status,
             'execution_count': self.execution_count,  # The base class increments the execution count
