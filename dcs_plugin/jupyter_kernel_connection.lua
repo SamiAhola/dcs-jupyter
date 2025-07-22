@@ -18,7 +18,7 @@ end
 
 function execute_command(command_str, env)
     return xpcall(function ()
-        local f = assert(loadstring("return " .. command_str, "=(zdcs)") or loadstring(command_str, "=(zdcs)"),
+        local f = assert(loadstring("return " .. command_str, "=(dcs_lua)") or loadstring(command_str, "=(dcs_lua)"),
                          "syntax error, cannot load cmd '" .. command_str .. "'.")
         if env then
             f = setfenv(f, env)
