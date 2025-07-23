@@ -16,28 +16,30 @@ from dcs_jupyter.tools.aircraft_types import AircraftType
 async def spawn_aircraft(
     ctx: RunContext[DCSConnection],
     aircraft_type: AircraftType,
-    airbase_name: str,
+    x_coord: float,
+    y_coord: float,
+    altitude: float = 2000,
     group_id: int | None = None,
     unit_id: int | None = None,
-    altitude_offset_meters: int = 1000,
     pilot_skill_level: str = 'High',
-) -> str:
-    """Spawn an aircraft at the specified airbase location.
+) -> str | LuaExecutionError:
+    """Spawn an aircraft at the specified coordinates.
 
     Args:
         ctx: Runtime context containing DCS connection
         aircraft_type: DCS aircraft type from AircraftType enum
-        airbase_name: Name of the airbase where aircraft will spawn
+        x_coord: X coordinate in DCS world (East-West position)
+        y_coord: Y coordinate in DCS world (North-South position, this is Z in DCS internal system)
+        altitude: Altitude in meters above sea level (default: 2000m)
         group_id: Unique identifier for the aircraft group (optional, DCS auto-generates if None)
         unit_id: Unique identifier for the unit (optional, DCS auto-generates if None)
-        altitude_offset_meters: Altitude offset above airbase (default: 1000m)
         pilot_skill_level: AI pilot skill ("Rookie", "Trained", "Veteran", "Ace", "High")
 
     Returns:
         JSON string containing spawned aircraft details including position and IDs
 
     Raises:
-        LuaExecutionError: If airbase not found or spawn fails in DCS
+        LuaExecutionError: If spawn fails in DCS
 
     Note:
         DCS will auto-generate unique IDs if group_id or unit_id are None or conflict
@@ -47,20 +49,15 @@ async def spawn_aircraft(
     lua_template = Template(
         textwrap.dedent("""
         -- Template variables from Python
-        local airbaseName = "$airbase_name"
         local aircraftType = "$aircraft_type"
+        local xCoord = $x_coord
+        local yCoord = $y_coord
+        local altitude = $altitude
         local groupId = $group_id
         local unitId = $unit_id
-        local altitudeOffset = $altitude_offset_meters
         local skillLevel = "$pilot_skill_level"
-        local routeAltitude = 2000
+        local routeAltitude = altitude
 
-        local airbase = Airbase.getByName(airbaseName)
-        if not airbase then
-            error("Airbase '" .. airbaseName .. "' not found")
-        end
-
-        local position = airbase:getPosition().p
         local groupName = aircraftType .. "_Group"
         local unitName = aircraftType .. "_1"
 
@@ -70,17 +67,17 @@ async def spawn_aircraft(
                 [1] = {
                     ["name"] = unitName,
                     ["type"] = aircraftType,
-                    ["x"] = position.x,
-                    ["y"] = position.z,
-                    ["alt"] = position.y + altitudeOffset,
+                    ["x"] = xCoord,
+                    ["y"] = yCoord,
+                    ["alt"] = altitude,
                     ["skill"] = skillLevel
                 }
             },
             ["route"] = {
                 ["points"] = {
                     [1] = {
-                        ["x"] = position.x,
-                        ["y"] = position.z,
+                        ["x"] = xCoord,
+                        ["y"] = yCoord,
                         ["alt"] = routeAltitude,
                         ["type"] = "Turning Point"
                     }
@@ -106,26 +103,26 @@ async def spawn_aircraft(
             groupName = groupName,
             unitName = unitName,
             aircraftType = aircraftType,
-            location = airbaseName,
             position = {
-                x = position.x,
-                y = position.z,
-                alt = position.y + altitudeOffset
+                x = xCoord,
+                y = yCoord,
+                alt = altitude
             }
         })
     """).strip()
     )
 
     lua_code = lua_template.substitute(
-        airbase_name=airbase_name,
         aircraft_type=aircraft_type,
+        x_coord=x_coord,
+        y_coord=y_coord,
+        altitude=altitude,
         group_id=group_id if group_id is not None else 'nil',
         unit_id=unit_id if unit_id is not None else 'nil',
-        altitude_offset_meters=altitude_offset_meters,
         pilot_skill_level=pilot_skill_level,
     )
 
     try:
         return ctx.deps.execute(lua_code)
     except LuaExecutionError as e:
-        raise AgentRunError("Error executing lua code.") from e
+        return e

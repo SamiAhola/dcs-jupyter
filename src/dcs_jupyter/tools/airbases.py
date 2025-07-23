@@ -13,14 +13,15 @@ from dcs_jupyter.connection import DCSConnection, LuaExecutionError
 
 async def get_airbases(
     ctx: RunContext[DCSConnection],
-) -> str:
+) -> str | LuaExecutionError:
     """Get all available airbases with detailed information.
 
     Args:
         ctx: Runtime context containing DCS connection
 
     Returns:
-        JSON string containing list of airbases with their attributes
+        JSON string containing list of airbases with their attributes, or
+        LuaExecutionError if execution fails in DCS
     """
     
     lua_code = textwrap.dedent("""
@@ -62,4 +63,4 @@ async def get_airbases(
     try:
         return ctx.deps.execute(lua_code)
     except LuaExecutionError as e:
-        raise AgentRunError("Error executing lua code.") from e
+        return e

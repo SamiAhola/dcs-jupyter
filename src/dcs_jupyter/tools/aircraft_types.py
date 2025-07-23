@@ -1,85 +1,28 @@
-"""DCS aircraft types enumeration."""
+"""DCS aircraft types definitions."""
 
-from enum import StrEnum
+from typing import Literal
 
-
-class AircraftType(StrEnum):
-    """DCS World aircraft types (official)."""
-    
+# Define all aircraft types as string literals
+AircraftType = Literal[
     # Fighters
-    AJS37 = "AJS37"
-    F_15C = "F-15C"
-    F_16C = "F-16C"
-    F_4E = "F-4E"
-    FA_18C = "FA-18C"
-    JF_17 = "JF-17"
-    MIG_15BIS = "MiG-15bis"
-    MIG_21BIS = "MIG-21bis"
-    MIG_29 = "MiG-29"
-    SU_25A = "Su-25A"
-    SU_25T = "Su-25T"
-    SU_27 = "Su-27"
-    SU_33 = "Su-33"
-    
-    # Attack/Multirole
-    AV8BNA = "AV8BNA"
-    
+    "AJS37", "F-15C", "F-16C", "F-16C_50", "F-4E", "F/A-18C", "FA-18C_hornet", "JF-17",
+    "MiG-15bis", "MiG-21bis", "MiG-29", "Su-25", "Su-25A", "Su-25T", "Su-27", "Su-33",
+    "A-10A", "A-10C", "A-10C_2",
+    # Multirole
+    "AV8BNA", "F-14A-135-GR", "F-14A-95-GR", "F-14B", "F-15E", "F-16A", "F-16A MLU", "F-16C bl.50", "F-16C bl.52d",
+    "F-5E", "F-5E-3", "F-5E-3_FC", "F-86F Sabre", "F-86F_FC", "F/A-18A",
+    # Bombers/Strategic
+    "B-1B", "B-17G", "B-52H",
+    # Transport/Tanker
+    "An-26B", "C-130", "C-17A", "KC-135", "KC135MPRS", "KC130", "S-3B", "S-3B Tanker",
+    # AWACS/Electronic
+    "E-2C", "E-3A", "F-117A",
     # Helicopters
-    MI_8MTV2 = "Mi-8MTV2"
-    
+    "Mi-8MTV2", "Ka-50", "AH-64D",
     # Trainers
-    CHRISTEN_EAGLE_II = "Christen Eagle II"
-    L_39C = "L-39C"
-    YAK_52 = "Yak-52"
-    
+    "Christen Eagle II", "Hawk", "L-39C", "L-39ZA", "Yak-52",
     # WWII Aircraft
-    SPITFIRE_LF_MK_IX = "SpitfireLFMkIX"
-    TF_51D = "TF-51D"
-    
-    # Navigation Systems
-    NS430 = "NS430"
-    NS430_L_39C = "NS430_L-39C"
-    NS430_MI_8MT = "NS430_Mi-8MT"
-
-
-# Aircraft categories
-FIGHTERS = [
-    AircraftType.F_15C,
-    AircraftType.F_16C,
-    AircraftType.F_4E,
-    AircraftType.FA_18C,
-    AircraftType.JF_17,
-    AircraftType.MIG_15BIS,
-    AircraftType.MIG_21BIS,
-    AircraftType.MIG_29,
-    AircraftType.SU_27,
-    AircraftType.SU_33,
-]
-
-ATTACK_AIRCRAFT = [
-    AircraftType.AJS37,
-    AircraftType.AV8BNA,
-    AircraftType.SU_25A,
-    AircraftType.SU_25T,
-]
-
-HELICOPTERS = [
-    AircraftType.MI_8MTV2,
-]
-
-TRAINERS = [
-    AircraftType.CHRISTEN_EAGLE_II,
-    AircraftType.L_39C,
-    AircraftType.YAK_52,
-]
-
-WWII_AIRCRAFT = [
-    AircraftType.SPITFIRE_LF_MK_IX,
-    AircraftType.TF_51D,
-]
-
-NAVIGATION_SYSTEMS = [
-    AircraftType.NS430,
-    AircraftType.NS430_L_39C,
-    AircraftType.NS430_MI_8MT,
+    "MosquitoFBMkVI", "P-47D-30", "P-47D-30bl1", "P-47D-40", "P-51D", "P-51D-30-NA", "SpitfireLFMkIX", "SpitfireLFMkIXCW", "TF-51D",
+    # Unmanned
+    "MQ-9 Reaper", "RQ-1A Predator",
 ]
