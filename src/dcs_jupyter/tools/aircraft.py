@@ -26,7 +26,7 @@ async def spawn_aircraft(
 
     Args:
         ctx: Runtime context containing DCS connection
-        aircraft_type: DCS aircraft type from AircraftType enum
+        aircraft_type: a string literal DCS aircraft type from AircraftType literals
         x_coord: X coordinate in DCS world (East-West position)
         y_coord: Y coordinate in DCS world (North-South position, this is Z in DCS internal system)
         altitude: Altitude in meters above sea level (default: 2000m)
