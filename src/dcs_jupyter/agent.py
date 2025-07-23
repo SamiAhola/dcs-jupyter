@@ -10,6 +10,7 @@ except ImportError:
     raise ImportError("PydanticAI is required for agent functionality. Install with: pip install 'dcs-jupyter[agent]'")
 try:
     import logfire
+
     logfire.configure(send_to_logfire=False)
 except ImportError:
     pass
@@ -32,7 +33,6 @@ MODEL_PRESETS = {
     # Default
     'default': 'claude-sonnet-4-20250514',
 }
-
 
 
 def create_dcs_agent(model: str | None = None) -> Agent[DCSConnection]:

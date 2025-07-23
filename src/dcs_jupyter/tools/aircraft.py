@@ -5,7 +5,6 @@ from string import Template
 
 try:
     from pydantic_ai import RunContext
-    from pydantic_ai.exceptions import AgentRunError
 except ImportError:
     raise ImportError("PydanticAI is required for agent functionality. Install with: pip install 'dcs-jupyter[agent]'")
 

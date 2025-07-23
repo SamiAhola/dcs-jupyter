@@ -4,7 +4,6 @@ import textwrap
 
 try:
     from pydantic_ai import RunContext
-    from pydantic_ai.exceptions import AgentRunError
 except ImportError:
     raise ImportError("PydanticAI is required for agent functionality. Install with: pip install 'dcs-jupyter[agent]'")
 
@@ -23,7 +22,7 @@ async def get_airbases(
         JSON string containing list of airbases with their attributes, or
         LuaExecutionError if execution fails in DCS
     """
-    
+
     lua_code = textwrap.dedent("""
         local base = world.getAirbases()
         local airbases = {}
@@ -59,7 +58,7 @@ async def get_airbases(
             count = #airbases
         })
         """).strip()
-    
+
     try:
         return ctx.deps.execute(lua_code)
     except LuaExecutionError as e:

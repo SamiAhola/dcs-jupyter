@@ -36,7 +36,6 @@ class DCSConnection:
         self.socket.sendto(lua_code.encode(), (self.host, self.port))
         response = self.socket.recv(64 * 1024).decode()
 
-        # Parse structured response using match statement
         match response:
             case s if s.startswith('OK|'):
                 return s[3:]  # Remove "OK|" prefix
