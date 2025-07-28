@@ -16,7 +16,7 @@ except ImportError:
     pass
 
 from dcs_jupyter.connection import DCSConnection
-from dcs_jupyter.tools import get_airbases, spawn_aircraft
+from dcs_jupyter.tools import get_airbases, spawn_aircraft, execute_lua
 
 
 # Model presets for common AI providers
@@ -51,7 +51,7 @@ def create_dcs_agent(model: str | None = None) -> Agent[DCSConnection]:
     agent = Agent(
         resolved_model,
         system_prompt='You are a DCS World mission controller. Use available tools to execute user commands.',
-        tools=[get_airbases, spawn_aircraft],
+        tools=[get_airbases, spawn_aircraft, execute_lua],
         deps_type=DCSConnection,
         instrument=True,
     )

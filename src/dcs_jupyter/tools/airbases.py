@@ -8,19 +8,19 @@ except ImportError:
     raise ImportError("PydanticAI is required for agent functionality. Install with: pip install 'dcs-jupyter[agent]'")
 
 from dcs_jupyter.connection import DCSConnection, LuaExecutionError
+from dcs_jupyter.tools.base import DCSToolResult
 
 
 async def get_airbases(
     ctx: RunContext[DCSConnection],
-) -> str | LuaExecutionError:
+) -> DCSToolResult:
     """Get all available airbases with detailed information.
 
     Args:
         ctx: Runtime context containing DCS connection
 
     Returns:
-        JSON string containing list of airbases with their attributes, or
-        LuaExecutionError if execution fails in DCS
+        DCSToolResult with success flag and JSON data containing list of airbases
     """
 
     lua_code = textwrap.dedent("""
@@ -60,6 +60,7 @@ async def get_airbases(
         """).strip()
 
     try:
-        return ctx.deps.execute(lua_code)
+        result = ctx.deps.execute(lua_code)
+        return DCSToolResult(success=True, data=result)
     except LuaExecutionError as e:
-        return e
+        return DCSToolResult(success=False, data=str(e))

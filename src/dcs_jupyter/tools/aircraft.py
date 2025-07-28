@@ -10,6 +10,7 @@ except ImportError:
 
 from dcs_jupyter.connection import DCSConnection, LuaExecutionError
 from dcs_jupyter.tools.aircraft_types import AircraftType
+from dcs_jupyter.tools.base import DCSToolResult
 
 
 async def spawn_aircraft(
@@ -21,7 +22,7 @@ async def spawn_aircraft(
     group_id: int | None = None,
     unit_id: int | None = None,
     pilot_skill_level: str = 'High',
-) -> str | LuaExecutionError:
+) -> DCSToolResult:
     """Spawn an aircraft at the specified coordinates.
 
     Args:
@@ -35,10 +36,7 @@ async def spawn_aircraft(
         pilot_skill_level: AI pilot skill ("Rookie", "Trained", "Veteran", "Ace", "High")
 
     Returns:
-        JSON string containing spawned aircraft details including position and IDs
-
-    Raises:
-        LuaExecutionError: If spawn fails in DCS
+        DCSToolResult with success flag and JSON data containing spawned aircraft details
 
     Note:
         DCS will auto-generate unique IDs if group_id or unit_id are None or conflict
@@ -122,6 +120,7 @@ async def spawn_aircraft(
     )
 
     try:
-        return ctx.deps.execute(lua_code)
+        result = ctx.deps.execute(lua_code)
+        return DCSToolResult(success=True, data=result)
     except LuaExecutionError as e:
-        return e
+        return DCSToolResult(success=False, data=str(e))
