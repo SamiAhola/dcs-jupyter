@@ -11,7 +11,7 @@ except ImportError:
 try:
     import logfire
 
-    logfire.configure(send_to_logfire=False)
+    logfire.configure(send_to_logfire=False, console=False)
 except ImportError:
     pass
 
