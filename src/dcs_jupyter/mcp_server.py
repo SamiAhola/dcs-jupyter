@@ -12,7 +12,7 @@ from dcs_jupyter.connection import DCSConnection
 from dcs_jupyter.tools import create_tool_execute_lua
 
 
-def main():
+def main() -> None:
     dcs = DCSConnection()
     mcp: FastMCP = FastMCP(name='dcs-world-mcp', tools=[create_tool_execute_lua(dcs)])
 

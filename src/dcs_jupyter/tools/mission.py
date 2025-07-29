@@ -2,8 +2,8 @@
 
 import textwrap
 
-from dcs_jupyter.connection import DCSConnection, LuaExecutionError
-from dcs_jupyter.tools.base import DCSToolResult
+from dcs_jupyter.connection import DCSConnection
+from dcs_jupyter.tools.base import DCSToolResult, execute_dcs_tool
 
 
 def create_tool_get_mission_info(dcs: DCSConnection):
@@ -31,12 +31,6 @@ def create_tool_get_mission_info(dcs: DCSConnection):
             return net.lua2json(mission_info)
         """).strip()
 
-        try:
-            result = dcs.execute(lua_code)
-            return DCSToolResult(success=True, data=result)
-        except LuaExecutionError as e:
-            return DCSToolResult(success=False, data=str(e))
-        except Exception as e:
-            return DCSToolResult(success=False, data=f'Connection error: {str(e)}')
+        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
 
     return get_mission_info
