@@ -16,7 +16,7 @@ except ImportError:
     pass
 
 from dcs_jupyter.connection import DCSConnection
-from dcs_jupyter.tools import get_airbases, spawn_aircraft, execute_lua
+from dcs_jupyter.tools import create_tool_get_airbases, create_tool_spawn_aircraft, create_tool_execute_lua
 
 
 # Model presets for common AI providers
@@ -48,10 +48,18 @@ def create_dcs_agent(model: str | None = None) -> Agent[DCSConnection]:
     # Resolve model preset if applicable
     resolved_model = MODEL_PRESETS.get(model, model)
 
+    # Create connection first (for factory functions)
+    dcs_connection = DCSConnection()
+
+    # Create the agent with tools
     agent = Agent(
         resolved_model,
         system_prompt='You are a DCS World mission controller. Use available tools to execute user commands.',
-        tools=[get_airbases, spawn_aircraft, execute_lua],
+        tools=[
+            create_tool_get_airbases(dcs_connection),
+            create_tool_spawn_aircraft(dcs_connection),
+            create_tool_execute_lua(dcs_connection),
+        ],
         deps_type=DCSConnection,
         instrument=True,
     )
@@ -92,9 +100,9 @@ def main():
         return
 
     try:
-        dcs_connection = DCSConnection()
         agent = create_dcs_agent(args.model)
-        agent.to_cli_sync(deps=dcs_connection)
+        # The DCS connection is already created in create_dcs_agent
+        agent.to_cli_sync()
     except KeyboardInterrupt:
         print('\nAgent terminated by user')
     except Exception as e:
