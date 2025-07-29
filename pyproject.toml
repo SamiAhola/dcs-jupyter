@@ -38,6 +38,7 @@ requires-python = ">=3.11"
 dcs-jupyter-console = "dcs_jupyter.cli:main"
 dcs-jupyter-lab = "dcs_jupyter.cli:main_lab"
 dcs-jupyter-agent = "dcs_jupyter.agent:main"
+dcs-jupyter-mcp = "dcs_jupyter.mcp_server:main"
 
 [project.optional-dependencies]
 lab = [
@@ -49,6 +50,7 @@ lab = [
 agent = [
     "pydantic-ai>=0.4.4",
     "clai>=0.4.4",
+    "fastmcp>=2.10.6",
 ]
 [build-system]
 requires = ["hatchling"]

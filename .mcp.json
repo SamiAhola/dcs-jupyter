@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "dcs-world-mcp": {
+      "command": "python",
+      "args": ["-m", "dcs_jupyter.mcp_server"],
+      "env": {}
+    }
+  }
+}
