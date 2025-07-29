@@ -19,14 +19,15 @@ def dcs_connection():
     """
     try:
         with DCSConnection() as connection:
-            connection.execute("return true")
+            connection.execute('return true')
             yield connection
     except socket.timeout:
-        pytest.skip("DCS not running")
+        pytest.skip('DCS not running')
     except ConnectionError:
-        pytest.skip("Failed to connect to DCS")
+        pytest.skip('Failed to connect to DCS')
     except Exception as e:
-        pytest.fail(f"Unexpected error during DCS connection: {e}")
+        pytest.fail(f'Unexpected error during DCS connection: {e}')
+
 
 @pytest.fixture
 def live_dcs_run_context(dcs_connection):
