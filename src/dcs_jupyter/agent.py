@@ -17,6 +17,12 @@ except ImportError:
 
 from dcs_jupyter.connection import DCSConnection
 from dcs_jupyter.tools import create_tool_get_airbases, create_tool_spawn_aircraft, create_tool_execute_lua
+from dcs_jupyter.tools.fog import (
+    create_tool_set_fog_thickness,
+    create_tool_get_fog_thickness,
+    create_tool_set_fog_visibility_distance,
+    create_tool_get_fog_visibility_distance,
+)
 
 
 # Model presets for common AI providers
@@ -59,6 +65,10 @@ def create_dcs_agent(model: str | None = None) -> Agent[DCSConnection]:
             create_tool_get_airbases(dcs_connection),
             create_tool_spawn_aircraft(dcs_connection),
             create_tool_execute_lua(dcs_connection),
+            create_tool_set_fog_thickness(dcs_connection),
+            create_tool_get_fog_thickness(dcs_connection),
+            create_tool_set_fog_visibility_distance(dcs_connection),
+            create_tool_get_fog_visibility_distance(dcs_connection),
         ],
         deps_type=DCSConnection,
         instrument=True,

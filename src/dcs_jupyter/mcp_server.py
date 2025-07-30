@@ -15,6 +15,12 @@ from dcs_jupyter.tools import (
     create_tool_spawn_aircraft,
     create_tool_get_mission_info,
 )
+from dcs_jupyter.tools.fog import (
+    create_tool_set_fog_thickness,
+    create_tool_get_fog_thickness,
+    create_tool_set_fog_visibility_distance,
+    create_tool_get_fog_visibility_distance,
+)
 
 
 def main() -> None:
@@ -26,6 +32,10 @@ def main() -> None:
             create_tool_get_airbases(dcs),
             create_tool_spawn_aircraft(dcs),
             create_tool_get_mission_info(dcs),
+            create_tool_set_fog_thickness(dcs),
+            create_tool_get_fog_thickness(dcs),
+            create_tool_set_fog_visibility_distance(dcs),
+            create_tool_get_fog_visibility_distance(dcs),
         ],
     )
 
