@@ -1,7 +1,7 @@
 """DCS fog/weather tools."""
 
 from dcs_jupyter.connection import DCSConnection
-from dcs_jupyter.tools.base import DCSToolResult, execute_dcs_tool
+from dcs_jupyter.tools.base import DCSToolResult, handle_dcs_errors
 
 
 def create_tool_set_fog_thickness(dcs: DCSConnection):
@@ -15,7 +15,7 @@ def create_tool_set_fog_thickness(dcs: DCSConnection):
             DCSToolResult with success flag and confirmation data
         """
         lua_code = f"world.weather.setFogThickness({thickness})"
-        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
+        return handle_dcs_errors(lambda: dcs.execute(lua_code))
     
     return set_fog_thickness
 
@@ -28,7 +28,7 @@ def create_tool_get_fog_thickness(dcs: DCSConnection):
             DCSToolResult with success flag and current fog thickness data
         """
         lua_code = "return net.lua2json({fog_thickness = world.weather.getFogThickness()})"
-        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
+        return handle_dcs_errors(lambda: dcs.execute(lua_code))
     
     return get_fog_thickness
 
@@ -44,7 +44,7 @@ def create_tool_set_fog_visibility_distance(dcs: DCSConnection):
             DCSToolResult with success flag and confirmation data
         """
         lua_code = f"world.weather.setFogVisibilityDistance({distance})"
-        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
+        return handle_dcs_errors(lambda: dcs.execute(lua_code))
     
     return set_fog_visibility_distance
 
@@ -57,6 +57,6 @@ def create_tool_get_fog_visibility_distance(dcs: DCSConnection):
             DCSToolResult with success flag and current fog visibility distance data
         """
         lua_code = "return net.lua2json({fog_visibility_distance = world.weather.getFogVisibilityDistance()})"
-        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
+        return handle_dcs_errors(lambda: dcs.execute(lua_code))
     
     return get_fog_visibility_distance

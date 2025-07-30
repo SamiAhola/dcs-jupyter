@@ -1,7 +1,7 @@
 """DCS Lua execution tool for arbitrary code execution."""
 
 from dcs_jupyter.connection import DCSConnection
-from dcs_jupyter.tools.base import DCSToolResult, execute_dcs_tool
+from dcs_jupyter.tools.base import DCSToolResult, handle_dcs_errors
 
 
 def create_tool_execute_lua(dcs: DCSConnection):
@@ -23,6 +23,6 @@ def create_tool_execute_lua(dcs: DCSConnection):
             - List all units: "return net.lua2json({units = world.getUnits()})"
             - Get weather: "return net.lua2json({weather = world.weather})"
         """
-        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
+        return handle_dcs_errors(lambda: dcs.execute(lua_code))
 
     return execute_lua

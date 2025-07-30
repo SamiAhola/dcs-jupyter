@@ -5,7 +5,7 @@ from string import Template
 
 from dcs_jupyter.connection import DCSConnection
 from dcs_jupyter.tools.aircraft_types import AircraftType
-from dcs_jupyter.tools.base import DCSToolResult, execute_dcs_tool
+from dcs_jupyter.tools.base import DCSToolResult, handle_dcs_errors
 
 
 def create_tool_spawn_aircraft(dcs: DCSConnection):
@@ -113,6 +113,6 @@ def create_tool_spawn_aircraft(dcs: DCSConnection):
             pilot_skill_level=pilot_skill_level,
         )
 
-        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
+        return handle_dcs_errors(lambda: dcs.execute(lua_code))
 
     return spawn_aircraft

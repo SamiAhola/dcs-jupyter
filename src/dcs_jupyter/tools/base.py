@@ -14,12 +14,11 @@ class DCSToolResult(BaseModel):
     data: str
 
 
-def execute_dcs_tool(dcs: DCSConnection, operation: Callable[[], str]) -> DCSToolResult:
-    """Execute a DCS tool operation with standardized error handling.
+def handle_dcs_errors(operation: Callable[[], str]) -> DCSToolResult:
+    """Execute an operation with standardized DCS error handling.
 
     Args:
-        dcs: DCS connection instance
-        operation: Callable that performs the actual DCS operation
+        operation: Callable that performs the actual operation
 
     Returns:
         Standardized DCSToolResult with success flag and result/error data

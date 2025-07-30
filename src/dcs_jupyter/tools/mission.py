@@ -3,7 +3,7 @@
 import textwrap
 
 from dcs_jupyter.connection import DCSConnection
-from dcs_jupyter.tools.base import DCSToolResult, execute_dcs_tool
+from dcs_jupyter.tools.base import DCSToolResult, handle_dcs_errors
 
 
 def create_tool_get_mission_info(dcs: DCSConnection):
@@ -31,6 +31,6 @@ def create_tool_get_mission_info(dcs: DCSConnection):
             return net.lua2json(mission_info)
         """).strip()
 
-        return execute_dcs_tool(dcs, lambda: dcs.execute(lua_code))
+        return handle_dcs_errors(lambda: dcs.execute(lua_code))
 
     return get_mission_info
